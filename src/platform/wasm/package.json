@@ -11,11 +11,14 @@
     "./dist/mgba.wasm.map"
   ],
   "scripts": {
-    "build": "cd ../../.. && docker run --rm -t -v $PWD:/home/mgba/src local-mgba/wasm:2.0 && echo 'mGBA-wasm built successfully!'",
-    "build:image": "cd ./docker && docker build -t local-mgba/wasm:2.0 . && echo 'Image Built Successfully!'",
-    "prepare": "mkdir -p ./dist && cp -r ../../../build-wasm/wasm/* ./dist/ || { echo 'Copy failed'; exit 1; }",
-    "prepack": "npm run prepare",
-    "clean": "rm -rf ./dist"
+    "build": "npm run build:wasm && npm run copy:dist && echo 'mGBA-wasm built successfully!'",
+    "build:wasm": "node ./scripts/build-wasm.mjs",
+    "build:image": "echo 'No Docker image is required; npm run build uses the local npm emsdk toolchain.'",
+    "build:docker": "cd ./docker && docker build -t local-mgba/wasm:2.0 . && cd ../../.. && docker run --rm -t -v $PWD:/home/mgba/src local-mgba/wasm:2.0",
+    "copy:dist": "node ./scripts/copy-dist.mjs",
+    "prepare": "node ./scripts/prepare-package.mjs",
+    "prepack": "npm run build",
+    "clean": "rm -rf ./dist ../../../build-wasm"
   },
   "repository": {
     "type": "git",
@@ -40,5 +43,8 @@
   "bugs": {
     "url": "https://github.com/thenick775/mgba/issues"
   },
-  "homepage": "https://github.com/thenick775/mgba/tree/feature/wasm#readme"
+  "homepage": "https://github.com/thenick775/mgba/tree/feature/wasm#readme",
+  "devDependencies": {
+    "emsdk": "0.4.0"
+  }
 }

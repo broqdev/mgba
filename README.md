@@ -16,9 +16,10 @@ This is my fork of endrift's mGBA. My goal here was to make a fully functional w
 To build this branch and obtain a WASM, js, and type definition files, run either of the following in the repo's root directory:
 
 ```
-# using local build from pinned emcc from emscripten/emsdk:4.0.4
+# using the local npm package toolchain
 cd ./src/platform/wasm;
-npm run build:image && npm run build;
+npm install;
+npm run build;
 ```
 
 ```
